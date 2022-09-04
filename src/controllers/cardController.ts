@@ -4,7 +4,8 @@ import * as cvcUtils from '../../utils/cvcGenerator';
 import sumDate from '../../utils/sumYearDate';
 import transformInitials from '../../utils/transformName';
 import cardGernerator from '../../utils/cardNumberGenerator';
-import * as activationService from '../services/activationServices'
+import * as activationService from '../services/activationServices';
+import * as blockService from '../services/BlockCardServices'
 
 
 export async function cardCreation(req: Request, res: Response){
@@ -41,16 +42,39 @@ export async function cardCreation(req: Request, res: Response){
     await cardServices.insertCard(cardInfo)
     cardInfo.securityCode = cvcUtils.decryptCvc(cardInfo.securityCode);
     res.status(201).send(cardInfo);
-    return
+    return;
 }
 
 export async function cardActivation(req : Request, res: Response){
     const {securityCode, password, number, cardholderName, expirationDate} = req.body
+
     const card = await activationService.checkCardExists(number, cardholderName, expirationDate);
     await activationService.cardDateValidate(card);
     await activationService.passwordExists(card);
     await activationService.validateCvc(card, securityCode);
     await activationService.activateCard(card, password);
     res.status(201).send(card);
-    return
+    return;
+}
+
+export async function blockCard(req: Request, res: Response){
+    const {password, number, cardholderName, expirationDate} = req.body
+
+    const card = await activationService.checkCardExists(number, cardholderName, expirationDate);
+    await activationService.cardDateValidate(card);
+    await blockService.blockedCard(card);
+    await blockService.checkPassowrd(card, password);
+    await blockService.changeBlockStatus('block', card);
+    res.status(201).send(card);
+}
+
+export async function unblockCard(req: Request, res: Response){
+    const {password, number, cardholderName, expirationDate} = req.body
+
+    const card = await activationService.checkCardExists(number, cardholderName, expirationDate);
+    await activationService.cardDateValidate(card);
+    await blockService.NotBlockedCard(card);
+    await blockService.checkPassowrd(card, password);
+    await blockService.changeBlockStatus('unblock', card);
+    res.status(201).send(card);
 }

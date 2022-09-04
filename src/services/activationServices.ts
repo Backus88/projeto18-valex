@@ -1,4 +1,4 @@
-import { findById, Card, CardUpdateData, update, findByCardDetails } from "../repositories/cardRepository";
+import { Card, CardUpdateData, update, findByCardDetails } from "../repositories/cardRepository";
 import {notFoundError, notValidEntrie, notPossibleOperation, notAuthorized} from '../../utils/errorFunctions';
 import dayjs from "dayjs";
 import * as cvcUtils from '../../utils/cvcGenerator';

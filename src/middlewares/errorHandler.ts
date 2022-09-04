@@ -9,6 +9,13 @@ export default function errorHandler (error: any, req: Request, res: Response, n
   if (error.type === 'error_not_valid') {
     return res.status(403).send(error.message);
   }
+  if (error.type === 'error_not_possible') {
+    return res.status(409).send(error.message);
+  }
+  if (error.type === 'error_not_authorized') {
+    return res.status(401).send(error.message);
+  }
+  
 
   res.sendStatus(500); 
 }

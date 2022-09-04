@@ -1,6 +1,7 @@
 import { findByApiKey, Company } from "../repositories/companyRepository";
 import { findById} from "../repositories/employeeRepository";
 import { findByTypeAndEmployeeId, TransactionTypes, insert, CardInsertData } from "../repositories/cardRepository";
+import {notFoundError, notValidEntrie} from '../../utils/errorFunctions'
 
 export async function containsApiKey (apiKey : string){
     const thereIsApi = await findByApiKey(apiKey);
@@ -45,16 +46,3 @@ export async function getName (employeeId : number){
 }
 
 
-function notFoundError(entity : any) {
-	return {
-		type: "error_not_found",
-		message: `Could not find specified "${entity}"!`
-	};
-}
-
-function notValidEntrie (entity: any){
-    return {
-		type: "error_not_valid",
-		message: `Not valid "${entity}"!`
-	};
-}

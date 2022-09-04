@@ -38,6 +38,10 @@ export async function cardCreation(req: Request, res: Response){
         type:type
     }
     await cardServices.insertCard(cardInfo)
-    res.status(200).send(cardInfo);
+    res.status(201).send(cardInfo);
     return
+}
+
+export async function cardActivation(){
+    
 }

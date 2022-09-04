@@ -1,11 +1,11 @@
-import { findById, Card, CardUpdateData, update } from "../repositories/cardRepository";
+import { findById, Card, CardUpdateData, update, findByCardDetails } from "../repositories/cardRepository";
 import {notFoundError, notValidEntrie, notPossibleOperation, notAuthorized} from '../../utils/errorFunctions';
 import dayjs from "dayjs";
 import * as cvcUtils from '../../utils/cvcGenerator';
 import * as cryptUtils from '../../utils/genericCryptAndDecrypt';
 
-export async function checkCardExists(cardId: number){
-    const card = await findById(cardId)
+export async function checkCardExists(number:string, cardholderName: string, expirationDate: string){
+    const card = await findByCardDetails(number, cardholderName, expirationDate);
     if(!card){
         throw notFoundError('cardId');
     }
@@ -33,19 +33,21 @@ export async function passwordExists(card: Card){
     }
     return 'ok';
 }
-export async function validateCvc(card: Card, cvc:string){
+export async function validateCvc(card: Card, securityCode:string){
     const decryptedCvc = cvcUtils.decryptCvc(card.securityCode);
-    if(decryptedCvc !== cvc){
+    console.log(decryptedCvc);
+    console.log(securityCode);
+    if(decryptedCvc !== securityCode){
         throw notAuthorized ('securityCode');
     }
     return 'ok';
 }
 
-export async function activateCard(cardId: number, password:string){
+export async function activateCard(card: Card, password:string){
     const cryptedPassword = cryptUtils.crypt(password);
     const updateStatus : CardUpdateData= {
         password: cryptedPassword,
         isBlocked: false
     }
-    await update(cardId, updateStatus);
+    await update(card.id, updateStatus);
 }

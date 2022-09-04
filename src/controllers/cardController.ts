@@ -4,6 +4,7 @@ import * as cvcUtils from '../../utils/cvcGenerator';
 import sumDate from '../../utils/sumYearDate';
 import transformInitials from '../../utils/transformName';
 import cardGernerator from '../../utils/cardNumberGenerator';
+import * as activationService from '../services/activationServices'
 
 
 export async function cardCreation(req: Request, res: Response){
@@ -38,10 +39,18 @@ export async function cardCreation(req: Request, res: Response){
         type:type
     }
     await cardServices.insertCard(cardInfo)
+    cardInfo.securityCode = cvcUtils.decryptCvc(cardInfo.securityCode);
     res.status(201).send(cardInfo);
     return
 }
 
-export async function cardActivation(){
-    
+export async function cardActivation(req : Request, res: Response){
+    const {securityCode, password, number, cardholderName, expirationDate} = req.body
+    const card = await activationService.checkCardExists(number, cardholderName, expirationDate);
+    await activationService.cardDateValidate(card);
+    await activationService.passwordExists(card);
+    await activationService.validateCvc(card, securityCode);
+    await activationService.activateCard(card, password);
+    res.status(201).send(card);
+    return
 }

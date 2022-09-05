@@ -5,17 +5,13 @@ import sumDate from '../../utils/sumYearDate';
 import transformInitials from '../../utils/transformName';
 import cardGernerator from '../../utils/cardNumberGenerator';
 import * as activationService from '../services/activationServices';
-import * as blockService from '../services/BlockCardServices';
+import * as blockService from '../services/blockCardServices';
 import { getCardById } from "../services/paymentService";
 
 
 export async function cardCreation(req: Request, res: Response){
     let newKey = '';
     const {employeeId,
-        password,
-        isVirtual,
-        originalCardId,
-        isBlocked,
         type} = req.body;
     if(req.headers["x-api-key"] !== undefined){
         newKey =  req.headers["x-api-key"].toString();
@@ -34,10 +30,10 @@ export async function cardCreation(req: Request, res: Response){
         cardholderName: cardName,
         securityCode: cvc,
         expirationDate:expirationDate,
-        password:password,
-        isVirtual:isVirtual,
-        originalCardId:originalCardId,
-        isBlocked:isBlocked,
+        password:undefined,
+        isVirtual:false,
+        originalCardId:undefined,
+        isBlocked:false,
         type:type
     }
     await cardServices.insertCard(cardInfo)
@@ -54,7 +50,7 @@ export async function cardActivation(req : Request, res: Response){
     await activationService.passwordExists(card);
     await activationService.validateCvc(card, securityCode);
     await activationService.activateCard(card, password);
-    res.status(201).send(card);
+    res.sendStatus(201);
     return;
 }
 
@@ -66,7 +62,7 @@ export async function blockCard(req: Request, res: Response){
     await blockService.blockedCard(card);
     await blockService.checkPassowrd(card, password);
     await blockService.changeBlockStatus('block', card);
-    res.status(201).send(card);
+    res.sendStatus(201);
 }
 
 export async function unblockCard(req: Request, res: Response){
@@ -77,7 +73,7 @@ export async function unblockCard(req: Request, res: Response){
     await blockService.NotBlockedCard(card);
     await blockService.checkPassowrd(card, password);
     await blockService.changeBlockStatus('unblock', card);
-    res.status(201).send(card);
+    res.sendStatus(201);
 }
 
 export async function showCardTransactions (req: Request, res:Response){

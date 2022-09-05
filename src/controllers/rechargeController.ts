@@ -15,5 +15,5 @@ export async function rechargeCard(req: Request, res: Response){
     await existPassword(card);
     await cardDateValidate(card);
     await insertAmount(card, amount);
-    res.status(201).send(card);
+    res.sendStatus(201);
 }

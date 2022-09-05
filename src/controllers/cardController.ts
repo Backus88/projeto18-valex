@@ -5,7 +5,8 @@ import sumDate from '../../utils/sumYearDate';
 import transformInitials from '../../utils/transformName';
 import cardGernerator from '../../utils/cardNumberGenerator';
 import * as activationService from '../services/activationServices';
-import * as blockService from '../services/BlockCardServices'
+import * as blockService from '../services/BlockCardServices';
+import { getCardById } from "../services/paymentService";
 
 
 export async function cardCreation(req: Request, res: Response){
@@ -77,4 +78,11 @@ export async function unblockCard(req: Request, res: Response){
     await blockService.checkPassowrd(card, password);
     await blockService.changeBlockStatus('unblock', card);
     res.status(201).send(card);
+}
+
+export async function showCardTransactions (req: Request, res:Response){
+    const cardId = parseInt(req.params.id);
+    await getCardById(cardId);
+    const cardInfo = await cardServices.showCardInfo(cardId);
+    res.status(200).send(cardInfo);
 }

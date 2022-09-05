@@ -1,7 +1,7 @@
 import { findByApiKey, Company } from "../repositories/companyRepository";
 import { findById} from "../repositories/employeeRepository";
 import { findByTypeAndEmployeeId, TransactionTypes, insert, CardInsertData } from "../repositories/cardRepository";
-import {notFoundError, notValidEntrie} from '../../utils/errorFunctions';
+import {notFoundError, notValidEntrie, notPossibleOperation} from '../../utils/errorFunctions';
 import { findByCardId as byRechargeId } from '../repositories/rechargeRepository';
 import { findByCardId as byPaymentId} from '../repositories/paymentRepository';
 import sumAmounts from "../../utils/sumAmounts";
@@ -31,7 +31,7 @@ export async function validEmployee (employeeId : number, companyTable: Company)
 export async function employeeHaveType(type : TransactionTypes ,employeeId: number){
     const thereIsCardType = await findByTypeAndEmployeeId(type, employeeId);
     if(thereIsCardType){
-        throw notValidEntrie('Card type');
+        throw notPossibleOperation('Card type');
     }
     return "ok";
 }

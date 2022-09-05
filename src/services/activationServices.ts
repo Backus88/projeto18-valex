@@ -35,8 +35,6 @@ export async function passwordExists(card: Card){
 }
 export async function validateCvc(card: Card, securityCode:string){
     const decryptedCvc = cvcUtils.decryptCvc(card.securityCode);
-    console.log(decryptedCvc);
-    console.log(securityCode);
     if(decryptedCvc !== securityCode){
         throw notAuthorized ('securityCode');
     }

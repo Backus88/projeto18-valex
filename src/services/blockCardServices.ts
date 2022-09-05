@@ -16,8 +16,8 @@ export async function NotBlockedCard(card: Card){
 }
 
 export async function checkPassowrd(card: Card, password: string){
-    if(card.password === undefined){
-        throw notPossibleOperation('card not activated');
+    if(!card.password){
+        throw notValidEntrie('card not activated');
     }
     if(cryptUtils.decrypt(card.password)!== password ){
         throw notAuthorized('password invalid');

@@ -45,11 +45,18 @@ export async function checkBalance(card: Card, amount: number){
     const amountPayments = sumAmounts(payments);
     const amountRecharges = sumAmounts(recharges);
     if(amountPayments + amount > amountRecharges){
-        throw notPossibleOperation('insuficient balance');
+        throw notValidEntrie('insuficient balance');
     }
     return 'ok';
 }
 export async function insertPayment (data : PaymentInsertData){
     await insert(data);
     return 'ok';
+}
+
+export async function blockedCard(card: Card){
+    if(card.isBlocked){
+        throw notPossibleOperation("Block Card");
+    }
+    return 'ok'
 }

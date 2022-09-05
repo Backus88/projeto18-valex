@@ -2,15 +2,60 @@
 
 ### 1- Create CardRoute:
 Route:(POST, http://localhost:4000/card).
+
 Header:x-api-key, example: x-api-key = zadKLNx.DzvOVjQH01TumGl2urPjPQSxUbf67vs0.
+
 Body: JSON, {
 		"employeeId": number,
-    "type": *transactionType
+    		"type": (1)transactionType
 }
+
 Example of Body = {
 		"employeeId": 1,
-    "type": "transport"
+    		"type": "transport"
 }
 
+Return:Status 201(created); Return a object that allows the user to test the other routes.
 
-*transactionType = ['groceries', 'restaurant', 'transport', 'education', 'health'].
+Example of return= {
+	"employeeId": 1,
+	"number": "3698-030583-9194",
+	"cardholderName": "FULANO R D SILVA",
+	"securityCode": "557",
+	"expirationDate": "09/27",
+	"isVirtual": false,
+	"isBlocked": false,
+	"type": "transport"
+}
+
+### 2- Activate CardRoute:
+Route: (POST,http://localhost:4000/card/activation)
+
+Header: none.
+
+Body: JSON, {
+	"password":(2)string,
+	"number":string,
+	"cardholderName": string,
+	"securityCode": (3)string,
+	"expirationDate": string
+}
+Return Status 201(created);
+
+### 3- Block CardRoute:
+Route: (POST,(http://localhost:4000/card/block)
+
+Header: none.
+
+Body: JSON, {
+	"password":(2)string,
+	"number":string,
+	"cardholderName": string,
+	"expirationDate": string
+}
+
+Return Status 201(created);
+
+(1)transactionType = ['groceries', 'restaurant', 'transport', 'education', 'health'].
+(2)Allows only numeric strings with length = 4.
+(3)Allows only numeric strings with length = 4.

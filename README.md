@@ -29,7 +29,7 @@ Example of return= {
 }
 
 ### 2- Activate CardRoute:
-Route: (POST,http://localhost:4000/card/activation)
+Route: (POST,http://localhost:4000/card/activation).
 
 Header: none.
 
@@ -100,7 +100,39 @@ Return Status 200(OK); Return a object type ={
 	]
 };
 
+### 6- rechargeCard RechargeRoute:
+Route (POST, (http://localhost:4000/recharge))
+
+Header:x-api-key, example: x-api-key = zadKLNx.DzvOVjQH01TumGl2urPjPQSxUbf67vs0.
+
+Body:JSON, {
+	"amount": (4)number,
+	"employeeId":(4)number,
+	"type": transactionType
+}
+
+Return Status 201(created);
+
+### 7- paymentCard PaymentRoute:
+Route (POST, (http://localhost:4000/payment))
+
+Header:none
+
+Body:JSON, {
+	"password": (2)string,
+	"cardId": (4)number,
+	"businessId": (4)number,
+	"amount": (4)number
+}
+
+Return Status 201(created);
+
+
 
 (1)transactionType = ['groceries', 'restaurant', 'transport', 'education', 'health'].
+
 (2)Allows only numeric strings with length = 4.
+
 (3)Allows only numeric strings with length = 4.
+
+(4)Allows only numbers greater than 0.

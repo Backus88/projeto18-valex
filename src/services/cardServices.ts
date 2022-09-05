@@ -1,7 +1,7 @@
 import { findByApiKey, Company } from "../repositories/companyRepository";
 import { findById} from "../repositories/employeeRepository";
 import { findByTypeAndEmployeeId, TransactionTypes, insert, CardInsertData } from "../repositories/cardRepository";
-import {notFoundError, notValidEntrie} from '../../utils/errorFunctions'
+import {notFoundError, notValidEntrie} from '../../utils/errorFunctions';
 
 export async function containsApiKey (apiKey : string){
     const thereIsApi = await findByApiKey(apiKey);

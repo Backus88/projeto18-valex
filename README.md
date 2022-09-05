@@ -56,6 +56,51 @@ Body: JSON, {
 
 Return Status 201(created);
 
+### 4- unBlock CardRoute:
+Route: (POST,(http://localhost:4000/card/unblock)
+
+Header: none.
+
+Body: JSON, {
+	"password":(2)string,
+	"number":string,
+	"cardholderName": string,
+	"expirationDate": string
+}
+
+Return Status 201(created);
+
+
+### 5- showTransactions CardRoute:
+Route: (GET,(http://localhost:4000/card/:id)
+
+Header: none.
+
+Body: none.
+
+Return Status 200(OK); Return a object type ={
+	"balance": number,
+	"transactions": [
+		{
+			"id": number,
+			"cardId": number,
+			"businessId": number,
+			"timestamp": string,
+			"amount": number,
+			"businessName": string
+		}
+	],
+	"recharges": [
+		{
+			"id": number,
+			"cardId": number,
+			"timestamp": string,
+			"amount":number
+		}
+	]
+};
+
+
 (1)transactionType = ['groceries', 'restaurant', 'transport', 'education', 'health'].
 (2)Allows only numeric strings with length = 4.
 (3)Allows only numeric strings with length = 4.
